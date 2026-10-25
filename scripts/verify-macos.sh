@@ -18,9 +18,11 @@ bash "$package/install-macos.sh"
 # Fresh CI machines may still have an AudioComponentRegistrar catalogue from
 # before the bundle was installed. Refresh only that disposable runner session.
 if [[ "${CI:-}" == true ]]; then
- killall AudioComponentRegistrar 2>/dev/null || true
+ touch "$HOME/Library/Audio/Plug-Ins/Components"
+ killall -9 AudioComponentRegistrar 2>/dev/null || true
 fi
-for attempt in {1..12}; do
+ls -ld "$HOME/Library/Audio/Plug-Ins/Components/CueFlow.component"
+for attempt in {1..20}; do
  catalogue="$(auval -a 2>&1)"
  if [[ "$catalogue" == *Cfp1*Cufl* ]]; then break; fi
  sleep 1
