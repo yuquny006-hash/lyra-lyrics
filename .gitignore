@@ -1,0 +1,16 @@
+build/
+dist/
+third_party/
+.superpowers/
+*.user
+*.log
+research/real-samples/
+research/format-reference/reference-*.txt
+user-output/
+engine/__pycache__/
+.local/
+host-tests/
+research/*
+!research/format-reference/
+__pycache__/
+.DS_Store

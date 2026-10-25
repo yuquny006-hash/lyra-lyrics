@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.22)
+project(CueFlowClapSmoke LANGUAGES CXX)
+add_executable(CueFlowClapSmoke ../ClapSmoke.cpp)
+target_compile_features(CueFlowClapSmoke PRIVATE cxx_std_17)
+target_include_directories(CueFlowClapSmoke PRIVATE ../../third_party/clap-juce-extensions/clap-libs/clap/include)
+if(UNIX AND NOT APPLE)
+ target_link_libraries(CueFlowClapSmoke PRIVATE dl)
+endif()

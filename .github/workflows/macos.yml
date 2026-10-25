@@ -1,0 +1,75 @@
+name: macOS plugins
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      aax_development:
+        description: Also build unsigned AAX development bundle
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: macos-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build Universal and run native tests
+        run: bash scripts/build-macos.sh
+      - name: Package with source and licenses
+        run: bash scripts/package-macos.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macOS-Universal-build
+          path: |
+            dist/*.zip
+            dist/*.sha256
+            dist/mac-validation-tools.tar.gz
+          retention-days: 14
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: macOS-build-test-logs
+          path: build/macos/Testing/Temporary/
+          retention-days: 7
+  verify:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: macOS-Universal-build
+          path: dist
+      - name: Validate package on native CPU
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          shasum -a 256 -c *.sha256
+          ditto -x -k CueFlow-*-macOS-Universal.zip .
+          mkdir validation-tools
+          tar -xzf mac-validation-tools.tar.gz -C validation-tools
+          cd ..
+          bash scripts/verify-macos.sh "$PWD"/dist/CueFlow-*-macOS-Universal "$PWD/dist/validation-tools" 2>&1 | tee dist/validation.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: validation-${{ matrix.runner }}
+          path: dist/validation.txt
+          retention-days: 14
