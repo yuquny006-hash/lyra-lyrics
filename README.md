@@ -1,5 +1,17 @@
 # Lyra 录音歌词跟随系统 0.5.4 · Amu music
 
+录音时跟随宿主时间显示逐字歌词，支持独立歌手阅读窗和手机多设备扫码投屏。
+
+## Mac 自动构建
+
+公开源码仓库：https://github.com/yuquny006-hash/lyra-lyrics
+
+在 Actions 中选择 **macOS plugins**，成功运行后可下载 `macOS-Universal-build`：AU（Logic）、VST3、CLAP 和独立版，包含 Apple Silicon 与 Intel。工作流分别在两种 CPU 上运行自动测试和 AU 校验。安装方法见 [Mac 安装说明](docs/MAC-INSTALL.md)。包为临时签名测试版，尚未进行 Apple Developer ID 公证或真实 Logic 工程验收。
+
+Pro Tools 的 **macOS AAX development (unsigned)** 是独立手动工作流，只生成未签名开发包；正式使用仍需要 Avid/PACE 签名。
+
+本地 Mac 构建：安装 Xcode、CMake、Git 后运行 `bash scripts/build-macos.sh`，脚本获取固定版本依赖。公开仓库不包含私人录音、历史截图和原始项目 Git 历史。
+
 ## 0.5.4 多格式交付
 
 Windows x64 提供 VST3、CLAP 和独立版，使用 `install-plugins.ps1` 安装，已有安装加 `-Update`。保留 VST3 的 CueFlow 标识，兼容已有工程。Mac AU/VST3/CLAP 和 AAX 开发构建准备文件随 Source 提供，尚无已验证的 Mac 或已签名 AAX 正式安装包。格式与宿主能力的区别、验证范围见 `docs/HOST-COMPATIBILITY.md`（发行包根目录同名文件）。

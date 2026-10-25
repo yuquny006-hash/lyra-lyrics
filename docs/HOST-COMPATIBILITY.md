@@ -25,7 +25,7 @@ Cubase 反馈端口设置见 LYRIC-SEEK.md。其他宿主应在有持续音频�
 
 ## Mac 构建与验收
 
-在装有 Xcode、CMake、Git 的 Mac 上展开 Source，包括 JUCE 源码到 `third_party/JUCE-8.0.12`，执行 `bash scripts/build-macos.sh`。构建目标为 macOS 11+、arm64+x86_64。然后 `bash scripts/install-macos.sh` 安装到用户的 Audio/Plug-Ins 目录。安装脚本保留已有插件，遇到重复会停止。
+在装有 Xcode、CMake、Git 的 Mac 上展开 Source，执行 `bash scripts/build-macos.sh`。脚本自动取得固定版本 JUCE 与 CLAP；若发行包已包含依赖源码则直接使用。构建目标为 macOS 11+、arm64+x86_64。然后 `bash scripts/install-macos.sh` 安装到用户的 Audio/Plug-Ins 目录。安装脚本保留已有插件，遇到重复会停止。也可使用公开仓库 Actions 的 macOS plugins 工作流取得构建包，安装说明见 MAC-INSTALL.md。
 
 运行 `auval -v aufx Cfp1 Cufl`，在 Logic 插件管理器中验证并做播放、暂停、回跳、循环、保存重开、投屏测试。分发给其他 Mac 还应完成 Developer ID 签名与公证；脚本不会关闭 Gatekeeper 或伪造签名。
 

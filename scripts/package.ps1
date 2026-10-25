@@ -26,8 +26,8 @@ if(Test-Path (Join-Path $root 'docs/TEST-REPORT.md')){Copy-Item -LiteralPath (Jo
 Copy-Item -LiteralPath (Join-Path $root 'docs/LYRIC-SEEK.md') -Destination $destination -Force
 $source=Join-Path $destination 'Source'
 New-Item -ItemType Directory -Force $source | Out-Null
-foreach($folder in @('src','tests','scripts','docs','samples','LICENSES','integrations')){Copy-Item -LiteralPath (Join-Path $root $folder) -Destination $source -Recurse -Force}
-foreach($name in @('README.md','THIRD-PARTY-NOTICES.md')){Copy-Item -LiteralPath (Join-Path $root $name) -Destination $source -Force}
+foreach($folder in @('src','tests','scripts','docs','samples','LICENSES','integrations','.github')){Copy-Item -LiteralPath (Join-Path $root $folder) -Destination $source -Recurse -Force}
+foreach($name in @('README.md','THIRD-PARTY-NOTICES.md','LICENSE','.gitignore','.gitattributes')){Copy-Item -LiteralPath (Join-Path $root $name) -Destination $source -Force}
 Copy-Item -LiteralPath (Join-Path $root 'CMakeLists.txt') -Destination $source -Force
 $sourceEngine=Join-Path $source 'engine'
 New-Item -ItemType Directory -Force $sourceEngine | Out-Null
