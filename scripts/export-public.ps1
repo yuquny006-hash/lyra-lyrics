@@ -9,7 +9,7 @@ $files=@('.gitignore','.gitattributes','CMakeLists.txt','README.md','THIRD-PARTY
 foreach($folder in @('src','tests','engine','integrations','samples','LICENSES','scripts','.github')){
  $files+=Get-ChildItem -LiteralPath (Join-Path $root $folder) -File -Recurse | Where-Object {$_.FullName -notmatch '[\\/]__pycache__[\\/]'} | ForEach-Object {$_.FullName.Substring($root.Length+1)}
 }
-$files+=@('docs/CUBASE-QUICKSTART.md','docs/LYRIC-SEEK.md','docs/HOST-COMPATIBILITY.md','docs/MAC-INSTALL.md')
+$files+=@('docs/CUBASE-QUICKSTART.md','docs/LYRIC-SEEK.md','docs/HOST-COMPATIBILITY.md','docs/MAC-INSTALL.md','docs/MAC-VALIDATION.md')
 $files+=Get-ChildItem (Join-Path $root 'research/format-reference/*.py') | ForEach-Object {$_.FullName.Substring($root.Length+1)}
 foreach($relative in $files){
  $source=Join-Path $root $relative

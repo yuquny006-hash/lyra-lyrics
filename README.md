@@ -14,7 +14,7 @@ Pro Tools 的 **macOS AAX development (unsigned)** 是独立手动工作流，�
 
 ## 0.5.4 多格式交付
 
-Windows x64 提供 VST3、CLAP 和独立版，使用 `install-plugins.ps1` 安装，已有安装加 `-Update`。保留 VST3 的 CueFlow 标识，兼容已有工程。Mac AU/VST3/CLAP 和 AAX 开发构建准备文件随 Source 提供，尚无已验证的 Mac 或已签名 AAX 正式安装包。格式与宿主能力的区别、验证范围见 `docs/HOST-COMPATIBILITY.md`（发行包根目录同名文件）。
+Windows x64 提供 VST3、CLAP 和独立版，使用 `install-plugins.ps1` 安装，已有安装加 `-Update`。保留 VST3 的 CueFlow 标识，兼容已有工程。Mac 提供 AU/VST3/CLAP/独立版 Universal 预览包，以及单独的 AAX 未签名开发包；[下载预览版](https://github.com/yuquny006-hash/lyra-lyrics/releases/tag/v0.5.4-macos-preview.1)。Apple Silicon、Intel 自动测试与 AU 校验均通过，真实宿主录音仍待验收，详见 [验证记录](docs/MAC-VALIDATION.md)。格式与宿主能力的区别见 `docs/HOST-COMPATIBILITY.md`。
 
 ## 0.5.3 点击定位与多设备
 
