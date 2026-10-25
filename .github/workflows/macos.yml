@@ -3,13 +3,20 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      artifact_run:
+        description: Optional existing run ID to verify without rebuilding
+        type: string
+        default: ''
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: macos-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   build:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.artifact_run == '' }}
     runs-on: macos-15
     timeout-minutes: 40
     steps:
@@ -37,6 +44,7 @@ jobs:
           retention-days: 7
   verify:
     needs: build
+    if: ${{ always() && (needs.build.result == 'success' || (github.event_name == 'workflow_dispatch' && inputs.artifact_run != '')) }}
     strategy:
       fail-fast: false
       matrix:
@@ -51,6 +59,8 @@ jobs:
         with:
           name: macOS-Universal-build
           path: dist
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.artifact_run || github.run_id }}
       - name: Validate package on native CPU
         shell: bash
         run: |
