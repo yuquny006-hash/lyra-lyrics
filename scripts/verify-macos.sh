@@ -5,7 +5,7 @@ cd "$root"
 package="${1:?Pass the extracted macOS package directory}"
 tools="${2:?Pass the validation tools directory}"
 for bundle in CueFlow.app CueFlow.vst3 CueFlow.component CueFlow.clap; do
- lipo -verify_arch arm64 x86_64 "$package/$bundle/Contents/MacOS/CueFlow"
+ lipo "$package/$bundle/Contents/MacOS/CueFlow" -verify_arch arm64 x86_64
  codesign --verify --deep --strict "$package/$bundle"
 done
 "$tools/CueFlowTests_artefacts/Release/CueFlowTests" tests/fixtures

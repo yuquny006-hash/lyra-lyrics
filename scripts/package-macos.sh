@@ -14,7 +14,7 @@ for item in 'VST3/CueFlow.vst3' 'AU/CueFlow.component' 'CLAP/CueFlow.clap'; do
 done
 ditto build/macos/CueFlowStandalone_artefacts/Release/CueFlow.app "$dest/CueFlow.app"
 for bundle in "$dest/CueFlow.app" "$dest/CueFlow.vst3" "$dest/CueFlow.component" "$dest/CueFlow.clap"; do
- lipo -verify_arch arm64 x86_64 "$bundle/Contents/MacOS/CueFlow"
+ lipo "$bundle/Contents/MacOS/CueFlow" -verify_arch arm64 x86_64
  codesign --force --deep --sign - "$bundle"
  codesign --verify --deep --strict "$bundle"
 done
