@@ -1,0 +1,44 @@
+name: macOS AAX development (unsigned)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  aax:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build unsigned Universal AAX
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/setup-macos.sh
+          cmake -S . -B build/aax-macos -G Xcode -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DCUEFLOW_BUILD_AAX=ON -DCUEFLOW_BUILD_CLAP=OFF
+          cmake --build build/aax-macos --config Release --target CueFlowPlugin_AAX --parallel 4
+      - name: Package development bundle and corresponding source
+        shell: bash
+        run: |
+          set -euo pipefail
+          name=CueFlow-0.5.4-macOS-AAX-development-UNSIGNED
+          dest="$PWD/dist/$name"
+          mkdir -p "$dest/Source/third_party"
+          ditto build/aax-macos/CueFlowPlugin_artefacts/Release/AAX/CueFlow.aaxplugin "$dest/CueFlow.aaxplugin"
+          lipo -verify_arch arm64 x86_64 "$dest/CueFlow.aaxplugin/Contents/MacOS/CueFlow"
+          cp LICENSE THIRD-PARTY-NOTICES.md "$dest/"
+          ditto LICENSES "$dest/LICENSES"
+          git archive HEAD | tar -x -C "$dest/Source"
+          tar -C third_party --exclude='.git' -cf - JUCE-8.0.12 | tar -xf - -C "$dest/Source/third_party"
+          printf 'UNSIGNED DEVELOPMENT BUILD. Not a signed Pro Tools release.\nAvid/PACE signing and Pro Tools testing are still required.\nSource commit: %s\n' "$(git rev-parse HEAD)" > "$dest/README-FIRST.txt"
+          ditto -c -k --sequesterRsrc --keepParent "$dest" "dist/$name.zip"
+          (cd dist && shasum -a 256 "$name.zip" > "$name.zip.sha256")
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macOS-AAX-development-UNSIGNED
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
