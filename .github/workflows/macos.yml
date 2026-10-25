@@ -3,11 +3,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      aax_development:
-        description: Also build unsigned AAX development bundle
-        type: boolean
-        default: false
 permissions:
   contents: read
 concurrency:
