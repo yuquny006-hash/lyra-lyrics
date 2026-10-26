@@ -1,6 +1,6 @@
-# macOS 0.5.4 预览包验证
+# macOS 0.5.4 验证基线
 
-日期：2026-10-25。Universal 包包含 Intel x86_64 与 Apple Silicon arm64，最低目标 macOS 11。
+以下为 2026-10-25 原始 0.5.4 包的验证基线；重新打包的结果以附带交付说明为准。Universal 包包含 Intel x86_64 与 Apple Silicon arm64，最低目标 macOS 11。
 
 | 检查 | Apple Silicon | Intel |
 |---|---|---|
@@ -17,9 +17,4 @@ VST3 本次验证到编译、双架构、签名与共享处理逻辑测试，未
 
 AAX 开发包构建成功，双架构检查通过；没有 Avid/PACE 发布签名，没有 Pro Tools 加载测试。
 
-## 校验和 SHA256
-
-- CueFlow-0.5.4-macOS-Universal.zip：`b2a8c36e8001b3a1fe42d7ac95ceab567b8acd17a7fc699aaad753fb2133e9ef`
-- CueFlow-0.5.4-macOS-AAX-development-UNSIGNED.zip：`63607ea038e232d48e8d2bd4255a6e088943e225f8e6ce31df9d25afba98ed5c`
-
-下载包附有各自对应源码及第三方许可证。普通插件构建源码提交 ef4de4d，AAX 构建源码提交 62bb513；后续提交只更新云端验证与说明。Mac 自动对齐运行环境、真实宿主控制回路与音频设备测试仍需实际 Mac 环境验收。
+每份 ZIP 的实际校验和见其同名 .sha256 文件，构建提交见包内 BUILD-INFO.txt。源码及第三方许可证随包提供。Mac 自动对齐运行环境、真实宿主控制回路与音频设备测试仍需实际 Mac 环境验收。
