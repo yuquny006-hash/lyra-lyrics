@@ -23,7 +23,12 @@ bool AlignmentJob::start(const juce::File&audio,const juce::String&lyrics,const 
  auto config=juce::JSON::parse(configFile().loadFileAsString());
  auto pythonPath=config["python"].toString(),scriptPath=config["script"].toString(),modelPath=config["models"].toString();
  if(!juce::File::isAbsolutePath(pythonPath)||!juce::File::isAbsolutePath(scriptPath)||!juce::File::isAbsolutePath(modelPath)||!juce::File(pythonPath).existsAsFile()||!juce::File(scriptPath).existsAsFile()){
-  error=U("Local alignment engine is not installed. Run setup-alignment.ps1 from the release package / 请先运行发行包中的 setup-alignment.ps1 安装本地对齐引擎");return false;
+ #if JUCE_MAC
+  error=U("Run Install-Alignment.command in the extracted Mac package, then retry / 请在解压后的 Mac 发行包中运行 Install-Alignment.command，安装完成后重试");
+ #else
+  error=U("Local alignment engine is not installed. Run setup-alignment.ps1 from the release package / 请先运行发行包中的 setup-alignment.ps1 安装本地对齐引擎");
+ #endif
+  return false;
  }
  if(!audio.existsAsFile()||lyrics.trim().isEmpty()||lyrics.length()>30000||(language!="zh"&&language!="en")||(model!="small"&&model!="base")){error=U("Choose reference vocals and valid sung lyrics / 请选择参考人声并填写演唱歌词");return false;}
  cancel();finished_=false;result_=juce::var();progress_=0;message_=U("Starting local alignment / 正在启动本地对齐");

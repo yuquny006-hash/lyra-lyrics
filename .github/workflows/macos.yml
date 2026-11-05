@@ -50,7 +50,7 @@ jobs:
       matrix:
         runner: [macos-15, macos-15-intel]
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -72,6 +72,8 @@ jobs:
           tar -xzf mac-validation-tools.tar.gz -C validation-tools
           cd ..
           bash scripts/verify-macos.sh "$PWD"/dist/CueFlow-*-macOS-Universal "$PWD/dist/validation-tools" 2>&1 | tee dist/validation.txt
+      - name: Install and run real local alignment
+        run: bash scripts/test-macos-alignment.sh "$PWD"/dist/CueFlow-*-macOS-Universal
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

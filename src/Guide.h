@@ -17,7 +17,7 @@ Closing the main plug-in editor keeps the independent reader and phone connected
 
 
 NEW · KTV automatic alignment
-Choose KTV auto align, select matching reference vocals, and keep only the actually sung lyrics in their performed order. Run setup-alignment.ps1 once if the local engine is missing; dependencies and the model download need an internet connection. Audio analysis runs locally. Start alignment, review the line/word timings and warnings, then Apply. Cancel leaves the current project unchanged. Text mismatch and unreliable timing may fail; correct the sung text and retry. Some multi-character tokens use proportional timing inside the token; sustained notes may need correction. This is offline preparation, not live voice following.
+Choose KTV auto align, select matching reference vocals, and keep only the actually sung lyrics in their performed order. Run setup-alignment.ps1 (Windows) or Install-Alignment.command (Mac) once if the local engine is missing; dependencies and the model download need an internet connection. Audio analysis runs locally. Start alignment, review the line/word timings and warnings, then Apply. Cancel leaves the current project unchanged. Text mismatch and unreliable timing may fail; correct the sung text and retry. Some multi-character tokens use proportional timing inside the token; sustained notes may need correction. This is offline preparation, not live voice following.
 Import a timed .cueflow/YRC and use Follow host in Cubase. Set Song origin to the accompaniment event start, then play in Cubase. Characters fill continuously across their timed duration; pause/seek/loop follow the host. Save .cueflow and the Cubase project to retain word timing. LRC export keeps only line timing.
 
 NEW · Scan from a phone
@@ -78,7 +78,7 @@ Version 0.5.4 · Desktop · Amu music
 关闭插件主编辑窗口后，独立阅读窗和手机继续同步；删除插件、关闭宿主或工程会结束同步。录音时请保留已启用的插件。同一首歌、同一版本只需准备一次逐字时间并保存，以后每遍录音复用；歌词或演唱节奏变化后才需要重新校准。
 
 新增 · KTV 自动逐字对齐
-点击“KTV 自动对齐”，选择同版原唱或参考干声，在左侧只保留实际唱出的歌词，顺序和重复次数必须与音频一致。若提示未安装引擎，先运行发行包 setup-alignment.ps1；首次安装依赖和下载模型需要联网，音频分析在本机进行。开始对齐后检查逐句、逐字时间与提示，点击应用。取消不会修改当前文稿。歌词不符或时间不可靠时可能失败，请修正实唱歌词后重试。部分多字词内部按时长分配，拖音需要检查。这是提前制作时间，不是实时听麦克风跟唱。
+点击“KTV 自动对齐”，选择同版原唱或参考干声，在左侧只保留实际唱出的歌词，顺序和重复次数必须与音频一致。若提示未安装引擎，Windows 运行发行包 setup-alignment.ps1，Mac 运行 Install-Alignment.command；首次安装依赖和下载模型需要联网，音频分析在本机进行。开始对齐后检查逐句、逐字时间与提示，点击应用。取消不会修改当前文稿。歌词不符或时间不可靠时可能失败，请修正实唱歌词后重试。部分多字词内部按时长分配，拖音需要检查。这是提前制作时间，不是实时听麦克风跟唱。
 导入带逐字时间的 .cueflow/YRC，在 Cubase 使用“跟随宿主”，将“歌曲起点”设为伴奏事件开头，再由 Cubase 播放。每个字按自身时长连续扫色，暂停、跳转和循环跟随宿主。保存 .cueflow 和 Cubase 工程可保留逐字时间；导出 LRC 只保留逐句时间。
 
 新增 · 手机扫码

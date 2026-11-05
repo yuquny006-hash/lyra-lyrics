@@ -18,7 +18,7 @@
 
 GitHub Actions 编译 Universal 包并在 Apple Silicon/Intel 运行自动测试、CLAP 加载测试及 AU 的 auval 检查。以对应 Actions 运行实际结果为准；这不能替代 Logic、Cubase、Pro Tools 的真实录音测试。
 
-插件显示名称保留 CueFlow，以兼容现有工程；产品界面使用 Lyra 品牌。手机多设备投屏与歌词显示沿用现有功能。Mac 自动对齐引擎需要另行配置，当前未提供 Mac Python 一键安装。歌词点击回控目前只提供 Cubase/Nuendo MIDI Remote 适配，Mac MIDI 端口连接仍需实机验证。
+插件显示名称保留 CueFlow，以兼容现有工程；产品界面使用 Lyra 品牌。手机多设备投屏与歌词显示沿用现有功能。Mac 自动对齐：完整解压后双击 Install-Alignment.command，或在终端执行 bash 并拖入 setup-alignment-macos.sh。安装需要联网，不需要预装 Python；结束显示 Ready 后回到软件重试。首次使用 base/small 模型还需下载模型，之后复用缓存。安装失败时发送 ~/Library/AmuMusic/CueFlow/alignment-install.log。音频在本机分析。歌词点击回控目前只提供 Cubase/Nuendo MIDI Remote 适配，Mac MIDI 端口连接仍需实机验证。
 
 AAX 不包含在此安装器中。可选 AAX-development 产物没有 Avid/PACE 发布签名，不能作为普通 Pro Tools 的正式可加载插件使用。
 
