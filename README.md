@@ -42,7 +42,7 @@ Windows 10/11 x64 的 VST3 提词插件与独立文稿工作台。歌词根据�
 
 参考人声必须与伴奏的速度、剪辑和前奏一致；仅有伴奏不能可靠提供演唱时间。歌词必须逐句对应实际演唱，包括重复段落。界面会预先过滤标题和段落标记，开始前请检查。歌词与音频不匹配时可能被拒绝，模型不会自动改正歌词或保证错误输入仍然准确。模型返回的多字符词块会按比例拆分时间，并给出提示；这些字的边界是近似值，需要听音核对。
 
-首次使用，在发行目录运行 `./setup-alignment.ps1`（源码目录运行 `./scripts/setup-alignment.ps1`）。安装过程联网下载 Python 和依赖，首次对齐还会下载所选模型；模型缓存后在本机处理，音频不上传，原音频文件不修改。发行包只包含安装脚本和 `engine/align.py`，不包含运行环境、模型或用户歌曲输出。配置位于 `%APPDATA%/AmuMusic/CueFlow/alignment.json`。
+首次使用，Mac 用户运行发行包中的 Install-Alignment.command；以下 PowerShell 步骤仅适用于 Windows。Windows 用户在发行目录运行 `./setup-alignment.ps1`（源码目录运行 `./scripts/setup-alignment.ps1`）。安装过程联网下载 Python 和依赖，首次对齐还会下载所选模型；模型缓存后在本机处理，音频不上传，原音频文件不修改。发行包只包含安装脚本和 `engine/align.py`，不包含运行环境、模型或用户歌曲输出。配置位于 `%APPDATA%/AmuMusic/CueFlow/alignment.json`。
 
 small 为推荐模型，base 更快；两者首次使用分别下载。完整逐字时间请保存 `.cueflow`；导出 LRC 只保留逐行时间，会丢失逐字时间。引擎与模型保存在本机，发行包不包含用户歌曲。
 
