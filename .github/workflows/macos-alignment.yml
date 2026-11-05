@@ -1,0 +1,21 @@
+name: macOS alignment engine
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  alignment:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install and exercise alignment
+        run: |
+          mkdir -p /tmp/lyra-engine-test/engine
+          cp scripts/setup-alignment-macos.sh /tmp/lyra-engine-test/
+          cp engine/align.py /tmp/lyra-engine-test/engine/
+          bash scripts/test-macos-alignment.sh /tmp/lyra-engine-test
