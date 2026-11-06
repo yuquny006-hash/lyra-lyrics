@@ -39,7 +39,6 @@ export UV_NO_MODIFY_PATH=1
 export UV_PYTHON_INSTALL_DIR="$base/python"
 export UV_CACHE_DIR="$base/cache"
 curl --fail --location --connect-timeout 15 --max-time 180 --retry 2 https://astral.sh/uv/0.9.7/install.sh -o "$base/install-uv.sh"
-export UV_INSTALLER_DOWNLOAD_TIMEOUT=120
 sh "$base/install-uv.sh"
 uv="$base/tools/uv"
 "$uv" python install 3.11
