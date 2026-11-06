@@ -1,0 +1,36 @@
+name: macOS offline engine
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engine:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Prepare and test online engine
+        run: |
+          mkdir -p /tmp/lyra-engine-test/engine
+          cp scripts/setup-alignment-macos.sh /tmp/lyra-engine-test/
+          cp engine/align.py /tmp/lyra-engine-test/engine/
+          bash scripts/test-macos-alignment.sh /tmp/lyra-engine-test
+      - name: Package relocatable offline engine
+        run: bash scripts/package-macos-engine.sh
+      - name: Test offline installation at a new path
+        run: |
+          cp offline-output/CueFlow-Engine-*.tar.gz offline-output/SHA256SUMS /tmp/lyra-engine-test/
+          export HTTPS_PROXY=http://127.0.0.1:9
+          export HTTP_PROXY=http://127.0.0.1:9
+          bash scripts/test-macos-alignment.sh /tmp/lyra-engine-test
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: offline-engine-${{ matrix.runner }}
+          path: |
+            offline-output/*.tar.gz
+            offline-output/SHA256SUMS
+          retention-days: 14

@@ -10,11 +10,36 @@ echo "Installing local alignment engine / 正在安装本地对齐引擎，需�
 worker="$here/engine/align.py"
 [[ -f "$worker" ]] || worker="$here/../engine/align.py"
 [[ -f "$worker" ]] || { echo "Please extract the complete package / 请完整解压发行包"; exit 1; }
+archive="$here/CueFlow-Engine-$(uname -m).tar.gz"
+if [[ -f "$archive" ]]; then
+ echo "Offline engine found / 找到离线引擎，正在校验解压，无需联网"
+ (cd "$here" && shasum -a 256 -c SHA256SUMS)
+ stage="$(mktemp -d "$base/offline-XXXXXXXX")"
+ tar -xzf "$archive" -C "$stage"
+ python="$stage/runtime/python/bin/python3.11"
+ "$python" -c 'import torch,torchaudio,stable_whisper,soundfile,numpy'
+ cp "$worker" "$stage/runtime/align.py"
+ "$python" - "$base" "$stage/runtime" <<'PY'
+import json,os,sys
+from pathlib import Path
+base,runtime=map(Path,sys.argv[1:])
+c={'version':1,'python':str(runtime/'python/bin/python3.11'),'script':str(runtime/'align.py'),'models':str(runtime/'models')}
+p=base/'alignment.json.tmp'
+p.write_text(json.dumps(c),encoding='utf-8')
+os.replace(p,base/'alignment.json')
+PY
+ echo "Ready / 离线安装成功，返回插件开始对齐即可。base 与 small 模型已包含。"
+ exit 0
+fi
+echo "未找到离线引擎，尝试联网安装；网络受限请使用与电脑芯片匹配的离线包。"
+export UV_HTTP_TIMEOUT=60
+export UV_HTTP_RETRIES=2
 export UV_INSTALL_DIR="$base/tools"
 export UV_NO_MODIFY_PATH=1
 export UV_PYTHON_INSTALL_DIR="$base/python"
 export UV_CACHE_DIR="$base/cache"
-curl --fail --location --retry 3 https://astral.sh/uv/0.9.7/install.sh -o "$base/install-uv.sh"
+curl --fail --location --connect-timeout 15 --max-time 180 --retry 2 https://astral.sh/uv/0.9.7/install.sh -o "$base/install-uv.sh"
+export UV_INSTALLER_DOWNLOAD_TIMEOUT=120
 sh "$base/install-uv.sh"
 uv="$base/tools/uv"
 "$uv" python install 3.11
